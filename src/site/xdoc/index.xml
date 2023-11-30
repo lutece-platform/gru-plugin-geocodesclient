@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Plugin geocodesclient</title>
+    </properties>
+    <head>
+        <!-- Keywords example : "cms, authentication, cms, workflow, seo, collaborative, ..." 
+             Use the language of this xdoc -->
+        <meta name="keywords" content="city, country, codification, INSEE" />
+    </head>
+    <body>
+        <section name="Plugin geocodes client">
+            <!--
+            <p>
+                <img src="images/geocodes.png" />
+            </p>
+            -->
+            <subsection name="Introduction">
+               <p>The purpose of this plug-in is to provide a local REST service to call geocodes services.</p>
+            </subsection>
+            <subsection name="Configuration">
+                <p></p>
+            </subsection>
+            <subsection name="Usage">
+                <p>Use the lutece @autocomplete macro, with the local suggestion URLs : </p>
+                    <ul>
+				   <li>GET /rest/geocodesclient/api/v1/cities</li>
+				   <li>GET /rest/geocodesclient/api/v1/countrie</li>
+		   </ul>
+            </subsection>
+        </section>
+    </body>
+</document>
+
