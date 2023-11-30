@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Plugin geocodesclient</title>
+    </properties>
+    <head>
+        <!-- Keywords example : "cms, authentication, cms, workflow, seo, collaborative, ..." 
+             Use the language of this xdoc -->
+        <meta name="keywords" content="city, country, codification, INSEE" />
+    </head>
+    <body>
+        <section name="Plugin geocodes client">
+            <!--
+            <p>
+                <img src="images/geocodes.png" />
+            </p>
+            -->
+            <subsection name="Introduction">
+               <p>The purpose of this plug-in is to provide a local REST service to call geocodes services.</p>
+            </subsection>
+            <subsection name="Configuration">
+                <p>The httpTransport bean must be injected in context (see the plugin context xml file for example).</p>
+                <p>Set the properties to specify APIM gateway url, AM token url, and credentials. </p>
+            </subsection>
+            <subsection name="Usage">
+                <p>Use the lutece @autocomplete macro, with the local suggestion URLs : </p>
+                    <ul>
+				   <li>GET /rest/geocodesclient/api/v1/cities</li>
+				   <li>GET /rest/geocodesclient/api/v1/countries</li>
+		   </ul>
+		   <p>Example : </p>
+		    
+			<ul>
+		       <li><source><![CDATA[ 	<@input type='date' id='birthdate' name='birthdate'  /> ]]> 	</source></li>
+			
+			
+			 <li><source><![CDATA[ 	<@input type='text' id='birthplace_code' name='birthplace_code' /> ]]></source></li>
+			 <li><source><![CDATA[ 	<@input type='text' id='birthplace' name='birthplace'  /> ]]></source></li>
+		
+		     <li><source><![CDATA[ 	<@autocomplete id="autocompleteBirthPlace" name="" itemValueFieldName="displayValue"
+					suggestionsUrl="rest/geocodesclient/api/v1/cities?search="
+					suggestionsPath="result"
+					itemTitleFieldNames='["value","codeZone"]' 
+					minimumInputLength=3 
+					additionnalRequestParamInputId="birthdate"
+					copyFields='[{"inputName":"birthplace_code","resultFieldName":"code"},{"inputName":"birthplace","resultFieldName":"value"}]' /> 
+					]]></source></li>
+					
+			 <li><source><![CDATA[ 	<@input type='text' id='birthcountry_code' name='birthcountry_code' /> ]]></source></li>
+			 <li><source><![CDATA[ 	<@input type='text' id='birthcountry' name='birthcountry'  /> ]]></source></li>
+		
+			 <li><source><![CDATA[ 	<@autocomplete id="autocompleteBirthCoutnry" name="" itemValueFieldName="value"
+					suggestionsUrl="rest/geocodesclient/api/v1/countries?search="
+					suggestionsPath="result"
+					itemTitleFieldNames='["value"]' 
+					minimumInputLength=3 
+					additionnalRequestParamInputId="birthdate"
+					copyFields='[{"inputName":"birthcountry_code","resultFieldName":"code"},{"inputName":"birthcountry","resultFieldName":"value"}]' />
+					]]>
+					</source></li>
+			</ul>
+            </subsection>
+        </section>
+    </body>
+</document>
+

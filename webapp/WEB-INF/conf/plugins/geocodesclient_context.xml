@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
+
+	<!-- Rest local service -->
+    <bean id="geocodesclient.geoCodesRest" class="fr.paris.lutece.plugins.geocodesclient.rs.GeocodesRest" />
+    
+    <!-- IHttpTransportProvider declarations -->
+    <!-- Mock -->
+    <!-- bean id="geocodes.restTransport.httpAccess" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.GeoCodeTransportMockRest" / -->
+    
+    <!-- direct access -->
+    <!-- bean id="identitystore.httpAccessTransport" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.HttpAccessTransport" >
+		    <property name="ApiEndPointUrl">
+            <value>${identitydesk.identitystore.ApiEndPointUrl}</value>
+        </property>
+     </bean -->
+    
+    <!-- APIM access -->
+    <bean id="geocodes.restTransport.httpAccess" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.HttpApiManagerAccessTransport">
+	    <property name="apiEndPointUrl">
+	    	<value>${geocodes.identitystore.ApiEndPointUrl}</value>
+	    </property>
+	    <property name="accessManagerEndPointUrl">
+	    	<value>${geocodes.identitystore.accessManagerEndPointUrl}</value>
+	    </property>
+	    <property name="accessManagerCredentials">
+	    	<value>${geocodes.identitystore.accessManagerCredentials}</value>
+	    </property>
+    </bean>
+    
+    <!-- Geocode service -->
+    <bean id="geocodes.geoCodesService" class="fr.paris.lutece.plugins.geocode.v1.web.service.GeoCodeService" >
+    	<constructor-arg ref="geocodes.restTransport.httpAccess"/>
+    </bean>
+
+</beans>
