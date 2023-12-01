@@ -35,6 +35,9 @@
 package fr.paris.lutece.plugins.geocodesclient.rs;
 
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +87,16 @@ public class GeocodesRest
     {
         if ( nVersion == VERSION_1 )
         {
-            Date dateref = DateUtil.parseIsoDate(strDateRef);
+        	DateFormat formatter = new SimpleDateFormat("yyyy-MM-DD"); 
+        	Date dateref = new Date( );
+			try {
+				dateref = (Date)formatter.parse( strDateRef );
+			} catch (ParseException e) {
+				AppLogService.error( Constants.ERROR_FORMAT_DATE_RESOURCE );
+	            return Response.status( Response.Status.NOT_FOUND )
+	                    .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_FORMAT_DATE_RESOURCE ) ) )
+	                    .build( );
+			}
         	return getCityListByNameAndDateV1( strVal, dateref);
         }
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
@@ -151,11 +163,21 @@ public class GeocodesRest
     public Response getCountiesListByNameAndDate(
 			    @PathParam( Constants.VERSION ) Integer nVersion,
 			    @QueryParam( Constants.SEARCHED_STRING ) String strVal,
-				@QueryParam( Constants.DATE ) Date dateRef )
+				@QueryParam( Constants.DATE ) String strDateRef )
     {
         if ( nVersion == VERSION_1 )
         {
-            return getCountriesListByNameAndDateV1( strVal, dateRef );
+        	DateFormat formatter = new SimpleDateFormat("yyyy-MM-DD"); 
+        	Date dateref = new Date( );
+			try {
+				dateref = (Date)formatter.parse( strDateRef );
+			} catch (ParseException e) {
+				AppLogService.error( Constants.ERROR_FORMAT_DATE_RESOURCE );
+	            return Response.status( Response.Status.NOT_FOUND )
+	                    .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_FORMAT_DATE_RESOURCE ) ) )
+	                    .build( );
+			}
+        	return getCountriesListByNameAndDateV1( strVal, dateref );
         }
         
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );

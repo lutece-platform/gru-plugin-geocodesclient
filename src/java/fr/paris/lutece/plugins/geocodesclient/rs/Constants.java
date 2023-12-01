@@ -61,6 +61,7 @@ public final class Constants
     public static final String ERROR_NOT_FOUND_RESOURCE = "Resource not found";
     public static final String ERROR_SEARCH_STRING = "Search string must contain 3 chars at least";
     public static final String ERROR_BAD_REQUEST_EMPTY_PARAMETER = "Empty parameter";
+    public static final String ERROR_FORMAT_DATE_RESOURCE = "Date not in correct format yyyy-MM-DD";
     
     public static final String CITY_PATH = "/cities";
     public static final String CITY_ATTRIBUTE_CODE_COUNTRY = "code_country";
