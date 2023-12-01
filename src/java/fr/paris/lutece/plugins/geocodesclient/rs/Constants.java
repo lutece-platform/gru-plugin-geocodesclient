@@ -48,6 +48,7 @@ public final class Constants
     public static final String SEARCHED_STRING = "search";
     public static final String DATE = "dateref";
     public static final String SEARCH_DATE_AND_CODE = "/{" + Constants.ID + "}";
+    public static final String ADDITIONAL_PARAM = "additionalParam";
     
     public static final String SWAGGER_DIRECTORY_PATH = "/plugins/";
     public static final String SWAGGER_PATH = "/swagger";

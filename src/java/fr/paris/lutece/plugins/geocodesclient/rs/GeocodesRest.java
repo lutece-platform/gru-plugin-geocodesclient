@@ -34,7 +34,7 @@
 
 package fr.paris.lutece.plugins.geocodesclient.rs;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +53,7 @@ import fr.paris.lutece.plugins.geocode.v1.web.service.GeoCodeService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.util.date.DateUtil;
 import fr.paris.lutece.util.json.ErrorJsonResponse;
 import fr.paris.lutece.util.json.JsonResponse;
 import fr.paris.lutece.util.json.JsonUtil;
@@ -64,8 +65,8 @@ import fr.paris.lutece.util.json.JsonUtil;
 public class GeocodesRest
 {
 	private static final int VERSION_1 = 1;
-	private static final String GEOCODE_BEAN_NAME = "";
-    private GeoCodeService _geoCodesService = SpringContextService.getBean( GEOCODE_BEAN_NAME );
+	private static final String GEOCODE_BEAN_NAME = "geocodes.geoCodesService";
+    private GeoCodeService _geoCodesService;
     		
     /**
      * Get City List with date
@@ -79,16 +80,34 @@ public class GeocodesRest
     @Produces( MediaType.APPLICATION_JSON )
     public Response getCityListByDate( @PathParam( Constants.VERSION ) Integer nVersion,
     							@QueryParam( Constants.SEARCHED_STRING ) String strVal,
-    							@QueryParam( Constants.DATE ) Date dateRef ) 
+    							@QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef ) 
     {
         if ( nVersion == VERSION_1 )
         {
-            return getCityListByNameAndDateV1( strVal, dateRef);
+            Date dateref = DateUtil.parseIsoDate(strDateRef);
+        	return getCityListByNameAndDateV1( strVal, dateref);
         }
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
         return Response.status( Response.Status.NOT_FOUND )
                 .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
                 .build( );
+    }
+    
+    private void init()
+    {
+    	if ( _geoCodesService == null)
+    	{
+    		_geoCodesService = SpringContextService.getBean( GEOCODE_BEAN_NAME );
+    	}
+    }
+    
+    private void fillCitiesDisplayValues( List<City> lstCities )
+    {
+    	//lstCities.stream( ).map( c -> c.setDisplayValue(  c.getValue() + "(" + c.getCodeZone() + ")" ) );
+    	for (City city : lstCities )
+    	{
+    		city.setDisplayValue(  city.getValue() + "(" + city.getCodeZone() + ")" );
+    	}
     }
     
     /**
@@ -102,7 +121,9 @@ public class GeocodesRest
         if ( strSearchBeginningVal != null || strSearchBeginningVal.length( ) >= 3 )
         {
         	try {
-    			lstCities = _geoCodesService.getListCitiesByNameAndDate( strSearchBeginningVal, dateCity );
+        		init( );
+    			lstCities = _geoCodesService.getListCitiesByNameAndDateLike( strSearchBeginningVal, dateCity );
+    			fillCitiesDisplayValues( lstCities );
     		} catch (Exception e) {
     			AppLogService.error( e );
     		}
@@ -151,7 +172,8 @@ public class GeocodesRest
         if ( strSearchBeginningVal == null || strSearchBeginningVal.length( ) < 3 )
         {
         	try {
-        		listCountries = _geoCodesService.getListCountriesByNameAndDate( strSearchBeginningVal, dateRef );
+        		init( );
+        		listCountries = _geoCodesService.getListCountryByNameAndDate( strSearchBeginningVal, dateRef );
     		} catch (Exception e) {
     			AppLogService.error( e );
     		}

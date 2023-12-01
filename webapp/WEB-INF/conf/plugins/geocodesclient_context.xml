@@ -4,7 +4,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
 
-    <bean id="geocodesclient.countryRest" class="fr.paris.lutece.plugins.geocodesclient.rs.CountryRest" />
-    <bean id="geocodesclient.cityRest" class="fr.paris.lutece.plugins.geocodesclient.rs.CityRest" />
+    <bean id="geocodesclient.geoCodesRest" class="fr.paris.lutece.plugins.geocodesclient.rs.GeocodesRest" />
+    
+    <bean id="geocodes.restTransport.httpAccess" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.GeoCodeTransportMockRest" />
+    
+    <bean id="geocodes.geoCodesService" class="fr.paris.lutece.plugins.geocode.v1.web.service.GeoCodeService" >
+    	<constructor-arg ref="geocodes.restTransport.httpAccess"/>
+    </bean>
 
 </beans>
