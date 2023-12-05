@@ -123,7 +123,7 @@ public class GeocodesRest
      */
     private void fillCitiesDisplayValues( List<City> lstCities )
     {
-    	lstCities.stream( ).forEach( c -> c.setDisplayValue(  c.getValue() + " (" + c.getCodeZone() + ")" ) );
+    	lstCities.stream( ).forEach( c -> c.setDisplayValue(  c.getValueMinComplete( ) + " (" + c.getCodeZone() + ")" ) );
     }
     
     /**
