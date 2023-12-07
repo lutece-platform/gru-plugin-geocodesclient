@@ -21,7 +21,9 @@ Utiliser la macro Lutece @autocomplete, avec les URLs locales :
 
  
 * /rest/geocodesclient/api/v1/cities.search
+* /rest/geocodesclient/api/v1/cities/city
 * /rest/geocodesclient/api/v1/countries
+* /rest/geocodesclient/api/v1/countries/country
 
 Exemple :
 

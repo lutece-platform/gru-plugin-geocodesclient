@@ -142,6 +142,96 @@ public class GeocodesRest
     }
     
     /**
+     * Get City with date
+     * @param nVersion the API version
+     * @param strCode the search string
+     * @param dateRef the reference date
+     * @return the City List
+     */
+    @GET
+    @Path( Constants.CITY_PATH + Constants.CITY_CODE_PATH )
+    @Produces( MediaType.APPLICATION_JSON )
+    public Response getCityByCodeAndDate( @PathParam( Constants.VERSION ) Integer nVersion,
+    							@QueryParam( Constants.SEARCHED_CODE ) String strCode,
+    							@QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef ) 
+    {
+        if ( nVersion == VERSION_1 )
+        {
+        	// TODO: put date format in properties
+            Date dateref = DateUtil.formatDate(strDateRef, Locale.FRANCE);
+        	return getCityByCodeAndDateV1( strCode, dateref );
+        }
+        AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
+        return Response.status( Response.Status.NOT_FOUND )
+                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
+                .build( );
+    }
+    
+    /**
+     * Get City by code and date V1
+     * @return the City for the version 1
+     */
+    private Response getCityByCodeAndDateV1( String strCode, Date dateCity )
+    {
+    	City city = new City( );
+    	try {
+    		init( );
+    		city = _geoCodesService.getCityByCodeAndDate( strCode, dateCity );
+		} catch (Exception e) {
+			AppLogService.error( e );
+		}
+
+        return Response.status( Response.Status.OK )
+                .entity( JsonUtil.buildJsonResponse( new JsonResponse( city ) ) )
+                .build( );
+    }
+    
+    /**
+     * Get City with date
+     * @param nVersion the API version
+     * @param strCode the search string
+     * @param dateRef the reference date
+     * @return the City List
+     */
+    @GET
+    @Path( Constants.COUNTRY_PATH + Constants.COUNTRY_CODE_PATH )
+    @Produces( MediaType.APPLICATION_JSON )
+    public Response getCountryByCodeAndDate( @PathParam( Constants.VERSION ) Integer nVersion,
+    							@QueryParam( Constants.SEARCHED_CODE ) String strCode,
+    							@QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef ) 
+    {
+        if ( nVersion == VERSION_1 )
+        {
+        	// TODO: put date format in properties
+            Date dateref = DateUtil.formatDate(strDateRef, Locale.FRANCE);
+        	return getCountryByCodeAndDateV1( strCode, dateref );
+        }
+        AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
+        return Response.status( Response.Status.NOT_FOUND )
+                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
+                .build( );
+    }
+    
+    /**
+     * Get City by code and date V1
+     * @return the City for the version 1
+     */
+    private Response getCountryByCodeAndDateV1( String strCode, Date dateCity )
+    {
+    	Country country = new Country( );
+    	try {
+    		init( );
+    		country = _geoCodesService.getCountryByCodeAndDate( strCode, dateCity );
+		} catch (Exception e) {
+			AppLogService.error( e );
+		}
+
+        return Response.status( Response.Status.OK )
+                .entity( JsonUtil.buildJsonResponse( new JsonResponse( country ) ) )
+                .build( );
+    }
+    
+    /**
      * Search Countries
      * @param nVersion the API version
      * @param search the searched string

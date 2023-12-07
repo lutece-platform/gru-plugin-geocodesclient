@@ -46,6 +46,7 @@ public final class Constants
     public static final String SEARCH_PATH = "/search/{" + Constants.SEARCHED_STRING + "}";
     public static final String SEARCH_DATE_PATH = "/searchdate/{" + Constants.SEARCHED_STRING + "}";
     public static final String SEARCHED_STRING = "search";
+    public static final String SEARCHED_CODE = "code";
     public static final String DATE = "dateref";
     public static final String SEARCH_DATE_AND_CODE = "/{" + Constants.ID + "}";
     public static final String ADDITIONAL_PARAM = "additionalParam";
@@ -63,12 +64,14 @@ public final class Constants
     public static final String ERROR_BAD_REQUEST_EMPTY_PARAMETER = "Empty parameter";
     
     public static final String CITY_PATH = "/cities";
+    public static final String CITY_CODE_PATH = "/city";
     public static final String CITY_ATTRIBUTE_CODE_COUNTRY = "code_country";
     public static final String CITY_ATTRIBUTE_CODE = "code";
     public static final String CITY_ATTRIBUTE_VALUE = "value";
     public static final String CITY_ATTRIBUTE_CODE_ZONE = "code_zone";
     
     public static final String COUNTRY_PATH = "/countries";
+    public static final String COUNTRY_CODE_PATH = "/country";
     public static final String COUNTRY_ATTRIBUTE_CODE = "code";
     public static final String COUNTRY_ATTRIBUTE_VALUE = "value";
     

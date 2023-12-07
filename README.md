@@ -21,7 +21,9 @@ Use the lutece @autocomplete macro, with the local suggestion URLs :
 
  
 * GET /rest/geocodesclient/api/v1/cities
-* GET /rest/geocodesclient/api/v1/countries
+* /rest/geocodesclient/api/v1/cities/city
+* /rest/geocodesclient/api/v1/countries
+* /rest/geocodesclient/api/v1/countries/country
 
 Example :
 
