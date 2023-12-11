@@ -269,7 +269,7 @@ public class GeocodesRest
     {
     	List<Country> listCountries = new ArrayList<>();
     	
-        if ( strSearchBeginningVal == null || strSearchBeginningVal.length( ) < 3 )
+        if ( strSearchBeginningVal != null && strSearchBeginningVal.length( ) > 3 )
         {
         	try {
         		init( );
