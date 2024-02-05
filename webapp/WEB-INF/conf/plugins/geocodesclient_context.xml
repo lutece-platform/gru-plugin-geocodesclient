@@ -9,7 +9,11 @@
     
     <!-- IHttpTransportProvider declarations -->
     <!-- Mock -->
-    <!-- bean id="geocodes.restTransport.httpAccess" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.GeoCodeTransportMockRest" / -->
+    <bean id="geocodes.restTransport.httpAccess" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.GeoCodeTransportMockRest" />
+    
+     <!-- bean id="geocodes.restTransport.httpAccess" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.GeoCodeTransportRest" >
+		<constructor-arg ref="identitystore.httpAccessTransport"/>
+     </bean -->
     
     <!-- direct access -->
     <!-- bean id="identitystore.httpAccessTransport" class="fr.paris.lutece.plugins.geocode.v1.web.rs.service.HttpAccessTransport" >
