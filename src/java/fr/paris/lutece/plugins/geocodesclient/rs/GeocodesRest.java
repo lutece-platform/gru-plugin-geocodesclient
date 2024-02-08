@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2023, City of Paris
+ * Copyright (c) 2002-2024, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.geocodesclient.rs;
 
 import fr.paris.lutece.plugins.geocode.v1.web.rs.dto.City;
@@ -65,7 +64,7 @@ import java.util.Locale;
 /**
  * CityRest
  */
-@Path( RestConstants.BASE_PATH + Constants.API_PATH + Constants.VERSION_PATH  )
+@Path( RestConstants.BASE_PATH + Constants.API_PATH + Constants.VERSION_PATH )
 public class GeocodesRest
 {
     private static final int VERSION_1 = 1;
@@ -89,46 +88,51 @@ public class GeocodesRest
 
     /**
      * Get City List with date
-     * @param nVersion the API version
-     * @param strVal the search string
-     * @param dateRef the reference date
+     * 
+     * @param nVersion
+     *            the API version
+     * @param strVal
+     *            the search string
+     * @param dateRef
+     *            the reference date
      * @return the City List
      */
     @GET
     @Path( Constants.CITY_PATH )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getCityListByDate( @PathParam( Constants.VERSION ) Integer nVersion,
-    							@QueryParam( Constants.SEARCHED_STRING ) String strVal,
-    							@QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef ) 
+    public Response getCityListByDate( @PathParam( Constants.VERSION ) Integer nVersion, @QueryParam( Constants.SEARCHED_STRING ) String strVal,
+            @QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef )
     {
         if ( nVersion == VERSION_1 )
         {
             final Date dateref;
-            try {
-                dateref = DEFAULT_DATEFORMAT.parse(strDateRef);
-            } catch (final ParseException e) {
-                AppLogService.error( e.getMessage() );
-                return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            try
+            {
+                dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
             }
-            return getCityListByNameAndDateV1( strVal, dateref);
+            catch( final ParseException e )
+            {
+                AppLogService.error( e.getMessage( ) );
+                return Response.status( Response.Status.BAD_REQUEST ).entity( e.getMessage( ) ).build( );
+            }
+            return getCityListByNameAndDateV1( strVal, dateref );
         }
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
         return Response.status( Response.Status.NOT_FOUND )
-                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
-                .build( );
+                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) ).build( );
     }
-    
+
     /**
      * init geocode service
      */
-    private void init()
+    private void init( )
     {
-    	if ( _geoCodesService == null)
-    	{
-    		_geoCodesService = SpringContextService.getBean( GEOCODE_BEAN_NAME );
-    	}
+        if ( _geoCodesService == null )
+        {
+            _geoCodesService = SpringContextService.getBean( GEOCODE_BEAN_NAME );
+        }
     }
-    
+
     /**
      * set display values
      * 
@@ -136,187 +140,210 @@ public class GeocodesRest
      */
     private void fillCitiesDisplayValues( List<City> lstCities )
     {
-    	lstCities.stream( ).forEach( c -> c.setDisplayValue(  c.getValue() + " (" + c.getCodeZone() + ")" ) );
+        lstCities.stream( ).forEach( c -> c.setDisplayValue( c.getValue( ) + " (" + c.getCodeZone( ) + ")" ) );
     }
-    
+
     /**
      * Get City List V1
+     * 
      * @return the City List for the version 1
      */
     private Response getCityListByNameAndDateV1( String strSearchBeginningVal, Date dateCity )
     {
-    	List<City> lstCities = new ArrayList<>( );
-    	
+        List<City> lstCities = new ArrayList<>( );
+
         if ( strSearchBeginningVal != null || strSearchBeginningVal.length( ) >= 3 )
         {
-        	try {
-        		init( );
-    			lstCities = _geoCodesService.getListCitiesByNameAndDateLike( strSearchBeginningVal, dateCity );
-    			fillCitiesDisplayValues( lstCities );
-    		} catch (Exception e) {
-    			AppLogService.error( e );
-    		}
+            try
+            {
+                init( );
+                lstCities = _geoCodesService.getListCitiesByNameAndDateLike( strSearchBeginningVal, dateCity );
+                fillCitiesDisplayValues( lstCities );
+            }
+            catch( Exception e )
+            {
+                AppLogService.error( e );
+            }
         }
 
-        return Response.status( Response.Status.OK )
-                .entity( JsonUtil.buildJsonResponse( new JsonResponse( lstCities ) ) )
-                .build( );
+        return Response.status( Response.Status.OK ).entity( JsonUtil.buildJsonResponse( new JsonResponse( lstCities ) ) ).build( );
     }
-    
+
     /**
      * Get City with date
-     * @param nVersion the API version
-     * @param strCode the search string
-     * @param dateRef the reference date
+     * 
+     * @param nVersion
+     *            the API version
+     * @param strCode
+     *            the search string
+     * @param dateRef
+     *            the reference date
      * @return the City List
      */
     @GET
     @Path( Constants.CITY_PATH + Constants.CITY_CODE_PATH )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getCityByCodeAndDate( @PathParam( Constants.VERSION ) Integer nVersion,
-    							@QueryParam( Constants.SEARCHED_CODE ) String strCode,
-    							@QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef ) 
+    public Response getCityByCodeAndDate( @PathParam( Constants.VERSION ) Integer nVersion, @QueryParam( Constants.SEARCHED_CODE ) String strCode,
+            @QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef )
     {
         if ( nVersion == VERSION_1 )
         {
             final Date dateref;
-            try {
-                dateref = DEFAULT_DATEFORMAT.parse(strDateRef);
-            } catch (final ParseException e) {
-                AppLogService.error( e.getMessage() );
-                return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            try
+            {
+                dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
             }
-        	return getCityByCodeAndDateV1( strCode, dateref );
+            catch( final ParseException e )
+            {
+                AppLogService.error( e.getMessage( ) );
+                return Response.status( Response.Status.BAD_REQUEST ).entity( e.getMessage( ) ).build( );
+            }
+            return getCityByCodeAndDateV1( strCode, dateref );
         }
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
         return Response.status( Response.Status.NOT_FOUND )
-                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
-                .build( );
+                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) ).build( );
     }
-    
+
     /**
      * Get City by code and date V1
+     * 
      * @return the City for the version 1
      */
     private Response getCityByCodeAndDateV1( String strCode, Date dateCity )
     {
-    	City city = new City( );
-    	try {
-    		init( );
-    		city = _geoCodesService.getCityByCodeAndDate( strCode, dateCity );
-		} catch (Exception e) {
-			AppLogService.error( e );
-		}
+        City city = new City( );
+        try
+        {
+            init( );
+            city = _geoCodesService.getCityByCodeAndDate( strCode, dateCity );
+        }
+        catch( Exception e )
+        {
+            AppLogService.error( e );
+        }
 
-        return Response.status( Response.Status.OK )
-                .entity( JsonUtil.buildJsonResponse( new JsonResponse( city ) ) )
-                .build( );
+        return Response.status( Response.Status.OK ).entity( JsonUtil.buildJsonResponse( new JsonResponse( city ) ) ).build( );
     }
-    
+
     /**
      * Get City with date
-     * @param nVersion the API version
-     * @param strCode the search string
-     * @param dateRef the reference date
+     * 
+     * @param nVersion
+     *            the API version
+     * @param strCode
+     *            the search string
+     * @param dateRef
+     *            the reference date
      * @return the City List
      */
     @GET
     @Path( Constants.COUNTRY_PATH + Constants.COUNTRY_CODE_PATH )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getCountryByCodeAndDate( @PathParam( Constants.VERSION ) Integer nVersion,
-    							@QueryParam( Constants.SEARCHED_CODE ) String strCode,
-    							@QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef ) 
+    public Response getCountryByCodeAndDate( @PathParam( Constants.VERSION ) Integer nVersion, @QueryParam( Constants.SEARCHED_CODE ) String strCode,
+            @QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef )
     {
         if ( nVersion == VERSION_1 )
         {
             final Date dateref;
-            try {
-                dateref = DEFAULT_DATEFORMAT.parse(strDateRef);
-            } catch (final ParseException e) {
-                AppLogService.error( e.getMessage() );
-                return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            try
+            {
+                dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
             }
-        	return getCountryByCodeAndDateV1( strCode, dateref );
+            catch( final ParseException e )
+            {
+                AppLogService.error( e.getMessage( ) );
+                return Response.status( Response.Status.BAD_REQUEST ).entity( e.getMessage( ) ).build( );
+            }
+            return getCountryByCodeAndDateV1( strCode, dateref );
         }
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
         return Response.status( Response.Status.NOT_FOUND )
-                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
-                .build( );
+                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) ).build( );
     }
-    
+
     /**
      * Get City by code and date V1
+     * 
      * @return the City for the version 1
      */
     private Response getCountryByCodeAndDateV1( String strCode, Date dateCity )
     {
-    	Country country = new Country( );
-    	try {
-    		init( );
-    		country = _geoCodesService.getCountryByCodeAndDate( strCode, dateCity );
-		} catch (Exception e) {
-			AppLogService.error( e );
-		}
+        Country country = new Country( );
+        try
+        {
+            init( );
+            country = _geoCodesService.getCountryByCodeAndDate( strCode, dateCity );
+        }
+        catch( Exception e )
+        {
+            AppLogService.error( e );
+        }
 
-        return Response.status( Response.Status.OK )
-                .entity( JsonUtil.buildJsonResponse( new JsonResponse( country ) ) )
-                .build( );
+        return Response.status( Response.Status.OK ).entity( JsonUtil.buildJsonResponse( new JsonResponse( country ) ) ).build( );
     }
-    
+
     /**
      * Search Countries
-     * @param nVersion the API version
-     * @param search the searched string
-     * @param dateRef the reference date
+     * 
+     * @param nVersion
+     *            the API version
+     * @param search
+     *            the searched string
+     * @param dateRef
+     *            the reference date
      * @return the Countries
      */
     @GET
     @Path( Constants.COUNTRY_PATH )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getCountiesListByNameAndDate(
-			    @PathParam( Constants.VERSION ) Integer nVersion,
-			    @QueryParam( Constants.SEARCHED_STRING ) String strVal,
-			    @QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef )
+    public Response getCountiesListByNameAndDate( @PathParam( Constants.VERSION ) Integer nVersion, @QueryParam( Constants.SEARCHED_STRING ) String strVal,
+            @QueryParam( Constants.ADDITIONAL_PARAM ) String strDateRef )
     {
         if ( nVersion == VERSION_1 )
         {
             final Date dateref;
-            try {
-                dateref = DEFAULT_DATEFORMAT.parse(strDateRef);
-            } catch (final ParseException e) {
-                AppLogService.error( e.getMessage() );
-                return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            try
+            {
+                dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
+            }
+            catch( final ParseException e )
+            {
+                AppLogService.error( e.getMessage( ) );
+                return Response.status( Response.Status.BAD_REQUEST ).entity( e.getMessage( ) ).build( );
             }
             return getCountriesListByNameAndDateV1( strVal, dateref );
         }
-        
+
         AppLogService.error( Constants.ERROR_NOT_FOUND_VERSION );
         return Response.status( Response.Status.NOT_FOUND )
-                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) )
-                .build( );
+                .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), Constants.ERROR_NOT_FOUND_VERSION ) ) ).build( );
     }
-    
+
     /**
      * Get Country V1
-     * @param id the id
+     * 
+     * @param id
+     *            the id
      * @return the Country for the version 1
      */
     private Response getCountriesListByNameAndDateV1( String strSearchBeginningVal, Date dateRef )
     {
-    	List<Country> listCountries = new ArrayList<>();
-    	
+        List<Country> listCountries = new ArrayList<>( );
+
         if ( strSearchBeginningVal != null && strSearchBeginningVal.length( ) > 3 )
         {
-        	try {
-        		init( );
-        		listCountries = _geoCodesService.getListCountryByNameAndDate( strSearchBeginningVal, dateRef );
-    		} catch (Exception e) {
-    			AppLogService.error( e );
-    		}
+            try
+            {
+                init( );
+                listCountries = _geoCodesService.getListCountryByNameAndDate( strSearchBeginningVal, dateRef );
+            }
+            catch( Exception e )
+            {
+                AppLogService.error( e );
+            }
         }
-        
-        return Response.status( Response.Status.OK )
-                .entity( JsonUtil.buildJsonResponse( new JsonResponse( listCountries ) ) )
-                .build( );
+
+        return Response.status( Response.Status.OK ).entity( JsonUtil.buildJsonResponse( new JsonResponse( listCountries ) ) ).build( );
     }
 }

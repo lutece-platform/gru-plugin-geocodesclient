@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2023, City of Paris
+ * Copyright (c) 2002-2024, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ package fr.paris.lutece.plugins.geocodesclient.rs;
 /**
  * Rest Constants
  */
-public final class Constants 
+public final class Constants
 {
     public static final String API_PATH = "geocodesclient/api";
     public static final String VERSION_PATH = "/v{" + Constants.VERSION + "}";
@@ -50,40 +50,40 @@ public final class Constants
     public static final String DATE = "dateref";
     public static final String SEARCH_DATE_AND_CODE = "/{" + Constants.ID + "}";
     public static final String ADDITIONAL_PARAM = "additionalParam";
-    
+
     public static final String SWAGGER_DIRECTORY_PATH = "/plugins/";
     public static final String SWAGGER_PATH = "/swagger";
     public static final String SWAGGER_VERSION_PATH = "/v";
     public static final String SWAGGER_REST_PATH = "rest/";
     public static final String SWAGGER_JSON = "/swagger.json";
-    
+
     public static final String EMPTY_OBJECT = "{}";
     public static final String ERROR_NOT_FOUND_VERSION = "Version not found";
     public static final String ERROR_NOT_FOUND_RESOURCE = "Resource not found";
     public static final String ERROR_SEARCH_STRING = "Search string must contain 3 chars at least";
     public static final String ERROR_BAD_REQUEST_EMPTY_PARAMETER = "Empty parameter";
-    
+
     public static final String CITY_PATH = "/cities";
     public static final String CITY_CODE_PATH = "/city";
     public static final String CITY_ATTRIBUTE_CODE_COUNTRY = "code_country";
     public static final String CITY_ATTRIBUTE_CODE = "code";
     public static final String CITY_ATTRIBUTE_VALUE = "value";
     public static final String CITY_ATTRIBUTE_CODE_ZONE = "code_zone";
-    
+
     public static final String COUNTRY_PATH = "/countries";
     public static final String COUNTRY_CODE_PATH = "/country";
     public static final String COUNTRY_ATTRIBUTE_CODE = "code";
     public static final String COUNTRY_ATTRIBUTE_VALUE = "value";
-    
+
     public static final String ID_PROVIDER_GEOCODE_LOCAL = "geocodes.geoCodeProviderLocal";
     public static final String ID_PROVIDER_GEOCODE_INSEE = "geocodes.geoCodeProviderINSEE";
-    
+
     public static final String CONST_DATE_MIN = "1943-01-01";
-    
+
     /**
      * Private constructor
      */
-    private Constants(  )
+    private Constants( )
     {
     }
 }
