@@ -70,7 +70,9 @@ public class GeocodesRest
     private static final int VERSION_1 = 1;
     private static final String GEOCODE_BEAN_NAME = "geocodes.geoCodesService";
     private static final DateFormat DEFAULT_DATEFORMAT;
-
+    private static final int cityMinChars = AppPropertiesService.getPropertyInt( "geocodes.city.minchars", 3);
+    private static final int countryMinChars = AppPropertiesService.getPropertyInt( "geocodes.country.minchars", 3);
+    
     private GeoCodeService _geoCodesService;
 
     static
@@ -152,7 +154,7 @@ public class GeocodesRest
     {
         List<City> lstCities = new ArrayList<>( );
 
-        if ( strSearchBeginningVal != null || strSearchBeginningVal.length( ) >= 3 )
+        if ( strSearchBeginningVal != null || strSearchBeginningVal.length( ) >= cityMinChars )
         {
             try
             {
@@ -331,7 +333,7 @@ public class GeocodesRest
     {
         List<Country> listCountries = new ArrayList<>( );
 
-        if ( strSearchBeginningVal != null && strSearchBeginningVal.length( ) > 3 )
+        if ( strSearchBeginningVal != null && strSearchBeginningVal.length( ) >= countryMinChars )
         {
             try
             {
