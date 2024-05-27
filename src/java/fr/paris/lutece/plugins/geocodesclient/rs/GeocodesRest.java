@@ -72,6 +72,7 @@ public class GeocodesRest
     private static final DateFormat DEFAULT_DATEFORMAT;
     private static final int cityMinChars = AppPropertiesService.getPropertyInt( "geocodes.city.minchars", 3);
     private static final int countryMinChars = AppPropertiesService.getPropertyInt( "geocodes.country.minchars", 3);
+    public static final String ERROR_DATE_RESOURCE = "The date additionalParam must be entered";
     
     private GeoCodeService _geoCodesService;
 
@@ -107,7 +108,14 @@ public class GeocodesRest
     {
         if ( nVersion == VERSION_1 )
         {
-            final Date dateref;
+            if ( strDateRef == null || strDateRef.isEmpty( ) )
+            {
+            	AppLogService.error( ERROR_DATE_RESOURCE );
+	            return Response.status( Response.Status.NOT_FOUND )
+	                    .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), ERROR_DATE_RESOURCE ) ) )
+	                    .build( );
+            }
+        	final Date dateref;
             try
             {
                 dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
@@ -191,6 +199,13 @@ public class GeocodesRest
         if ( nVersion == VERSION_1 )
         {
             final Date dateref;
+            if ( strDateRef == null || strDateRef.isEmpty( ) )
+            {
+            	AppLogService.error( ERROR_DATE_RESOURCE );
+	            return Response.status( Response.Status.NOT_FOUND )
+	                    .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), ERROR_DATE_RESOURCE ) ) )
+	                    .build( );
+            }
             try
             {
                 dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
@@ -247,7 +262,14 @@ public class GeocodesRest
     {
         if ( nVersion == VERSION_1 )
         {
-            final Date dateref;
+        	if ( strDateRef == null || strDateRef.isEmpty( ) )
+            {
+            	AppLogService.error( ERROR_DATE_RESOURCE );
+	            return Response.status( Response.Status.NOT_FOUND )
+	                    .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), ERROR_DATE_RESOURCE ) ) )
+	                    .build( );
+            }
+        	final Date dateref;
             try
             {
                 dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
@@ -304,7 +326,14 @@ public class GeocodesRest
     {
         if ( nVersion == VERSION_1 )
         {
-            final Date dateref;
+        	if ( strDateRef == null || strDateRef.isEmpty( ) )
+            {
+            	AppLogService.error( ERROR_DATE_RESOURCE );
+	            return Response.status( Response.Status.NOT_FOUND )
+	                    .entity( JsonUtil.buildJsonResponse( new ErrorJsonResponse( Response.Status.NOT_FOUND.name( ), ERROR_DATE_RESOURCE ) ) )
+	                    .build( );
+            }
+        	final Date dateref;
             try
             {
                 dateref = DEFAULT_DATEFORMAT.parse( strDateRef );
